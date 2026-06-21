@@ -1,6 +1,8 @@
 const svgPanZoom = window.svgPanZoom; 
 const subwaySvg = document.getElementById('subway-svg');
 let panZoom;
+let stations = [];
+let selectedStation = null;
 
 function smoothZoom(targetZoom, svgX, svgY) {
     const startZoom = panZoom.getZoom(); 
@@ -19,6 +21,25 @@ function smoothZoom(targetZoom, svgX, svgY) {
         
         if (frame >= totalFrames) clearInterval(move);
     }, 16);
+}
+
+function cleanStationName(name) {
+    let clean = name.split('(')[0].replace(/\s+/g, '');
+    if (!clean.endsWith('역')) clean += '역';
+    return clean;
+}
+
+function getXY(transform) {
+    const xy = transform.replace('matrix(', '').replace(')', '').split(' ');
+    return { x: parseFloat(xy[4]), y: parseFloat(xy[5]) };
+}
+
+function highlightStation(t) {
+    if (selectedStation) {
+        selectedStation.style.fill = '';
+    }
+    t.style.fill = 'red';
+    selectedStation = t;
 }
 
 export function initMap(onStationClick) {
@@ -49,19 +70,25 @@ export function initMap(onStationClick) {
         panZoom.zoom(1.5);
         
         const textElements = svgDoc.querySelectorAll('text');
+
+        // element: t 도 같이 저장
+        stations = Array.from(textElements)
+            .filter(t => !t.closest('#legend_ko'))
+            .map(t => {
+                const { x, y } = getXY(t.getAttribute('transform'));
+                return { name: cleanStationName(t.textContent), x, y, element: t };
+            });
+
         textElements.forEach(t => {
             t.style.cursor = 'pointer';
             t.addEventListener('click', () => {
                 if (t.closest('#legend_ko')) return;
-                const transform = t.getAttribute('transform'); 
-                const xy = transform.replace('matrix(', '').replace(')', '').split(' ');
-                const x = parseFloat(xy[4]);
-                const y = parseFloat(xy[5]);
-                
-                smoothZoom(7, x, y);
-                
-                const location = t.textContent;
+                const location = cleanStationName(t.textContent);
                 onStationClick(location); 
+
+                const { x, y } = getXY(t.getAttribute('transform'));
+                smoothZoom(7, x, y);
+                highlightStation(t);
             });
         });
     }
@@ -70,5 +97,16 @@ export function initMap(onStationClick) {
         setup();
     } else {
         subwaySvg.addEventListener('load', setup);
+    }
+}
+
+export function moveToStation(keyword) {
+    const stationKeyword = keyword.endsWith('역') ? keyword : keyword + '역';
+    
+    const found = stations.find(station => station.name === stationKeyword);
+    
+    if (found) {
+        smoothZoom(7, found.x, found.y);
+        highlightStation(found.element);
     }
 }
