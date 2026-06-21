@@ -219,3 +219,19 @@ body {
     line-height: 1.5;
     word-break: break-word;
 }
+
+.api-credit {
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    padding: 10px 16px;
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 12px;
+    color: #5a5a55;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    pointer-events: none;
+    z-index: 10;
+}
