@@ -2,6 +2,9 @@ const infoModal = document.getElementById('modal');
 const modalBody = document.getElementById('modal-body');
 const closeBtn = document.getElementById('modal-close');
 
+const introModal = document.getElementById('intro-modal');
+const closeBtnIntro = document.getElementById('intro-modal-close'); 
+
 export function openModal(item) {
     modalBody.replaceChildren();
     infoModal.style.display = 'flex';
@@ -40,16 +43,34 @@ export function openModal(item) {
     modalBody.append(modalImg, infoContainer); 
 }
 
-export function closeModal() {
-    infoModal.style.display = 'none'; 
+export function closeModal(type) {
+    if (type === infoModal)
+        infoModal.style.display = 'none'; 
+    else if (type === introModal)
+        introModal.style.display = 'none';
 }
 
 export function initModal() {
-    closeBtn.addEventListener('click', closeModal); 
-    
+    closeBtn.addEventListener('click', () => {
+        closeModal(infoModal);
+    });
+    closeBtnIntro.addEventListener('click', () => {
+        closeModal(introModal);
+    });
+
     infoModal.addEventListener('click', (e) => {
         if (e.target === infoModal) {
-            closeModal(); 
+            closeModal(infoModal); 
+        }
+    });
+    introModal.addEventListener('click', (e) => {
+        if (e.target === introModal) {
+            closeModal(introModal);
         }
     });
 }
+
+export function howToUseModal() {
+    introModal.style.display = 'flex';
+}
+ 

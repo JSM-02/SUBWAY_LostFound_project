@@ -34,7 +34,6 @@ export function initMap(onStationClick) {
                 const gutterWidth = 200;
                 const gutterHeight = 200;
                 const sizes = this.getSizes();
-
                 const leftLimit = -((sizes.viewBox.x + sizes.viewBox.width) * sizes.realZoom) + gutterWidth;
                 const rightLimit = sizes.width - gutterWidth - (sizes.viewBox.x * sizes.realZoom);
                 const topLimit = -((sizes.viewBox.y + sizes.viewBox.height) * sizes.realZoom) + gutterHeight;
@@ -46,6 +45,8 @@ export function initMap(onStationClick) {
                 };
             }
         });
+
+        panZoom.zoom(1.5);
         
         const textElements = svgDoc.querySelectorAll('text');
         textElements.forEach(t => {

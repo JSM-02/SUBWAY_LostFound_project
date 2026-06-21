@@ -1,6 +1,6 @@
 import { fetchLostItems } from './api.js';
 import { renderLostList } from './ui.js';
-import { initModal } from './modal.js';
+import { initModal, howToUseModal } from './modal.js';
 import { initMap } from './map.js';
 import { setupPagination } from './pagination.js';
 
@@ -26,14 +26,20 @@ function onSearch() {
     handleSearch(keyword, 'item');
 }
 
-document.getElementById('search-btn').addEventListener('click', onSearch);
+function mainInit() {
+    document.getElementById('search-btn').addEventListener('click', onSearch);
 
-document.getElementById('search').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        onSearch();
-    }
-});
-initModal();
-initMap((stationName) => {
-    handleSearch(stationName, 'location');
-});
+    document.getElementById('search').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            onSearch();
+        }
+    });
+
+    howToUseModal();
+    initModal();
+    initMap((stationName) => {
+        handleSearch(stationName, 'location');
+    });
+}
+
+mainInit();
