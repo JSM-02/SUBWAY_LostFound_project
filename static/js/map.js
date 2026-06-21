@@ -22,7 +22,7 @@ function smoothZoom(targetZoom, svgX, svgY) {
 }
 
 export function initMap(onStationClick) {
-    subwaySvg.addEventListener('load', () => {
+    function setup() {
         const svgDoc = subwaySvg.contentDocument;
         const svgEl = svgDoc.querySelector('svg');
         
@@ -49,6 +49,7 @@ export function initMap(onStationClick) {
         
         const textElements = svgDoc.querySelectorAll('text');
         textElements.forEach(t => {
+            t.style.cursor = 'pointer';
             t.addEventListener('click', () => {
                 if (t.closest('#legend_ko')) return;
                 const transform = t.getAttribute('transform'); 
@@ -62,5 +63,11 @@ export function initMap(onStationClick) {
                 onStationClick(location); 
             });
         });
-    });
+    }
+
+    if (subwaySvg.contentDocument && subwaySvg.contentDocument.querySelector('svg')) {
+        setup();
+    } else {
+        subwaySvg.addEventListener('load', setup);
+    }
 }
