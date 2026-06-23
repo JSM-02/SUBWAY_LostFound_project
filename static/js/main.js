@@ -2,7 +2,7 @@ import { initModal, howToUseModal } from './modal.js';
 import { initMap, moveToStation } from './map.js'; 
 import { initSearch } from './search.js';
 import { fetchLostItems } from './api.js';
-import { renderLostList } from './ui.js';
+import { renderLostList, renderMessage } from './ui.js';
 import { setupPagination } from './pagination.js';
 
 async function handleSearch(keyword, type, page = 1) {
@@ -11,6 +11,10 @@ async function handleSearch(keyword, type, page = 1) {
     }
     try {
         const data = await fetchLostItems(keyword, type, page);
+        if (data.totalItems === 0) {
+            renderMessage("검색 결과가 없습니다.");
+            return;
+        }
         renderLostList(data.items);
         setupPagination(data.totalItems, (newPage) => {
             handleSearch(keyword, type, newPage);

@@ -1,10 +1,12 @@
+import { renderMessage } from "./ui.js";
+
 let handleSearchFn;
 
 export function onSearch() {
     const keyword = document.getElementById('search').value.trim();
     const type = document.getElementById("search-filter").value;
     if (!keyword) {
-        alert('검색어를 입력하세요.');
+        renderMessage("검색어를 입력해주세요.");
         return;
     }
     handleSearchFn(keyword, type);

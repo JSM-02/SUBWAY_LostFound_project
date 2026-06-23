@@ -36,3 +36,11 @@ export function renderLostList(items) {
         listDiv.appendChild(card);
     });
 }
+
+export function renderMessage(text) {
+    listDiv.replaceChildren();
+    const p = document.createElement('p');
+    p.className = 'status-msg';
+    p.textContent = text;
+    listDiv.appendChild(p);
+}
