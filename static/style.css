@@ -60,6 +60,21 @@ body {
     box-shadow: 0 0 0 4px rgba(116, 192, 252, 0.15);
 }
 
+#search-filter {
+    height: 44px;
+    padding: 0 15px;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#search-filter:focus {
+    border-color: #74c0fc;
+    box-shadow: 0 0 0 4px rgba(116, 192, 252, 0.15);
+}
 #search-btn {
     height: 44px;
     padding: 0 18px;
