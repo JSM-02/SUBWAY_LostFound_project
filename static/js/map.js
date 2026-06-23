@@ -4,23 +4,30 @@ let panZoom;
 let stations = [];
 let selectedStation = null;
 
+function easeOutQuad(t) {
+    return t * (2 - t);
+}
+
 function smoothZoom(targetZoom, svgX, svgY) {
-    const startZoom = panZoom.getZoom(); 
-    const totalFrames = 20; 
-    let frame = 0; 
-    
-    const move = setInterval(() => {
+    const startZoom = panZoom.getZoom();
+    const totalFrames = 20;
+    let frame = 0;
+
+    function animate() {
         frame++;
-        panZoom.zoom(startZoom + (targetZoom - startZoom) * (frame / totalFrames));
-        
+        const t = easeOutQuad(frame / totalFrames);
+        panZoom.zoom(startZoom + (targetZoom - startZoom) * t);
+
         const s = panZoom.getSizes();
         panZoom.pan({
             x: s.width / 2 - svgX * s.realZoom,
             y: s.height / 2 - svgY * s.realZoom
         });
-        
-        if (frame >= totalFrames) clearInterval(move);
-    }, 16);
+
+        if (frame < totalFrames) requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
 }
 
 function cleanStationName(name) {
