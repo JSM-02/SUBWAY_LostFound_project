@@ -62,15 +62,15 @@ app.get('/location/:name', async (req, res) => {
     const { page, limit, offset } = getPagination(req.query);
     try {
         // stationNm으로 시작하거나 centerNm으로 시작하는 데이터만 조회
-        const whereClause = "WHERE depPlace LIKE ? OR depPlace LIKE ?";
+        const where = "WHERE depPlace LIKE ? OR depPlace LIKE ?";
         const queryParams = [`${stationNm}%`, `${centerNm}%`];
         const [rows] = await pool.query(
-            `SELECT * FROM keeping_items ${whereClause} ORDER BY fdymd DESC LIMIT ? OFFSET ?`, 
+            `SELECT * FROM keeping_items ${where} ORDER BY fdymd DESC LIMIT ? OFFSET ?`, 
             [...queryParams, limit, offset]
         );
 
         const [totalRows] = await pool.query(
-            `SELECT COUNT(*) as total FROM keeping_items ${whereClause}`,
+            `SELECT COUNT(*) as total FROM keeping_items ${where}`,
             queryParams
         );
 
@@ -90,7 +90,7 @@ app.get('/location/:name', async (req, res) => {
     }
 });
 
-// 물품명 or 장소명 으로 검색
+// 물품명으로 검색
 app.get('/item/:name', async (req, res) => {
     const itemName = req.params.name;
     const { page, limit, offset } = getPagination(req.query);
@@ -98,14 +98,14 @@ app.get('/item/:name', async (req, res) => {
     try {
         // 데이터 조회 
         const [rows] = await pool.query(
-            "SELECT * FROM keeping_items WHERE fdPrdtNm LIKE ? OR depPlace LIKE ? ORDER BY fdymd DESC LIMIT ? OFFSET ?",
-            [`%${itemName}%`, `%${itemName}%`, limit, offset]
+            "SELECT * FROM keeping_items WHERE fdPrdtNm LIKE ? ORDER BY fdymd DESC LIMIT ? OFFSET ?",
+            [`%${itemName}%`, limit, offset]
         );
 
         // 전체 개수 조회
         const [totalRows] = await pool.query(
-            "SELECT COUNT(*) as total FROM keeping_items WHERE fdPrdtNm LIKE ? OR depPlace LIKE ?",
-            [`%${itemName}%`, `%${itemName}%`]
+            "SELECT COUNT(*) as total FROM keeping_items WHERE fdPrdtNm LIKE ?",
+            [`%${itemName}%`]
         );
 
         res.json({
