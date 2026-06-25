@@ -125,9 +125,11 @@ function windowResize() {
     if (window.innerWidth <= 768) {
         mapArea.style.display = 'none';
         sidePanel.style.minWidth = '0';
+        sidePanel.style.width = '100%';
     } else {
         mapArea.style.display = '';
         sidePanel.style.minWidth = '';
+        sidePanel.style.width = '';
     }
 }
 
