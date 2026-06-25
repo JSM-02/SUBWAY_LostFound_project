@@ -117,3 +117,19 @@ export function moveToStation(keyword) {
         highlightStation(found.element);
     }
 }
+
+const mapArea = document.getElementById('map-area');
+const sidePanel = document.getElementById('side-panel');
+
+function windowResize() {
+    if (window.innerWidth <= 768) {
+        mapArea.style.display = 'none';
+        sidePanel.style.minWidth = '0';
+    } else {
+        mapArea.style.display = '';
+        sidePanel.style.minWidth = '';
+    }
+}
+
+window.addEventListener('resize', windowResize);
+windowResize();
