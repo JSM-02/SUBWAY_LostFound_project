@@ -1,6 +1,6 @@
 body {
     display: flex;
-    height: 100vh;
+    height: 100dvh; 
     margin: 0;
     background-color: #e0f2fe;
 }
@@ -11,6 +11,9 @@ body {
     }
     #search-btn {
         width: 100%;
+    }
+    #side-panel {
+        height: 100dvh; 
     }
 }
 
@@ -30,8 +33,7 @@ body {
     flex: 3;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    border-left: 1px solid #e9ecef;
+    border-left: 1px solid #e9ecef; 
 }
 
 .panel-header {
