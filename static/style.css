@@ -5,6 +5,15 @@ body {
     background-color: #e0f2fe;
 }
 
+@media (max-width: 768px) {
+    .search-box {
+        flex-wrap: wrap;
+    }
+    #search-btn {
+        width: 100%;
+    }
+}
+
 #map-area {
     position: relative;
     flex: 7;
